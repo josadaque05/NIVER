@@ -30,11 +30,14 @@
 
   <div class="card">
     <h2>Confirme sua presença</h2>
-    <form action="https://formsubmit.co/josadaque.lopes@ba.estudante.senai.br" method="POST">
-      <input type="text" name="nome" placeholder="Seu nome" required>
-      <input type="number" name="quantidade" placeholder="Quantidade de pessoas" min="1" required>
-      <button type="submit">Confirmar</button>
-    </form>
+   <form action="https://formsubmit.co/josadaque.lopes@ba.estudante.senai.br" method="POST">
+  <input type="text" name="nome" placeholder="Seu nome" required>
+  <input type="number" name="quantidade" placeholder="Quantidade de pessoas" min="1" required>
+  <input type="hidden" name="_subject" value="Nova confirmação de presença!">
+  <input type="hidden" name="_captcha" value="false">
+  <button type="submit">Confirmar</button>
+</form>
+
   </div>
 </body>
 </html>
