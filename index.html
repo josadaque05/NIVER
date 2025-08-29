@@ -7,37 +7,64 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #ffdee9, #b5fffc); margin: 0; padding: 0; text-align: center; color: #333; }
-    header { padding: 20px; background: #ff80ab; color: white; border-radius: 0 0 30px 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    header { padding: 20px; background: #e53935; color: white; border-radius: 0 0 30px 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     h1 { margin: 0; font-size: 2em; }
     .details { margin: 20px; font-size: 1.2em; }
-    .card { background: white; margin: 20px auto; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 400px; }
-    input, button { width: 90%; padding: 10px; margin: 10px 0; border-radius: 10px; border: 1px solid #ccc; font-size: 1em; }
-    button { background: #ff80ab; color: white; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
-    button:hover { background: #e91e63; }
+    .card { background: white; margin: 20px auto; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 700px; }
+    ul { list-style: none; padding: 0; }
+    li { background: #fff; margin: 5px auto; padding: 10px; border-radius: 10px; max-width: 400px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    #total { font-weight: bold; margin-top: 10px; }
+    iframe { width: 100%; max-width: 640px; border-radius: 15px; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
   </style>
 </head>
 <body>
   <header>
     <h1>🎂 Jardim da Zoe 🌸</h1>
-    <p>Venha comemorar os 2 aninhos da Zoe!</p>
+    <p>Venha comemorar os 2 aninhos da Zoe Rocha Lopes!</p>
   </header>
 
   <div class="details">
     <p><strong>📅 Data:</strong> 09/11/2025</p>
-    <p><strong>⏰ Horário:</strong> 16:00</p>
+    <p><strong>⏰ Horário:</strong> 15:30</p>
     <p><strong>📍 Local:</strong> Sítio Canaã - Bairro Viveiros, Feira de Santana</p>
   </div>
 
   <div class="card">
     <h2>Confirme sua presença</h2>
-   <form action="https://formsubmit.co/josadaque.lopes@ba.estudante.senai.br" method="POST">
-  <input type="text" name="nome" placeholder="Seu nome" required>
-  <input type="number" name="quantidade" placeholder="Quantidade de pessoas" min="1" required>
-  <input type="hidden" name="_subject" value="Nova confirmação de presença!">
-  <input type="hidden" name="_captcha" value="false">
-  <button type="submit">Confirmar</button>
-</form>
-
+    <!-- Formulário embutido -->
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe6qPAa5lByrhyTPfcRrcFAX5A4jginnajtL6dE4iAFDBn_fA/viewform?embedded=true" width="640" height="795" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
   </div>
+
+  <div class="card">
+    <h2>Lista de confirmados</h2>
+    <ul id="confirmados">Carregando...</ul>
+    <p id="total"></p>
+  </div>
+
+  <!-- Papaparse para ler o CSV -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSkdInNjNPQu06yrwGigzFiQTfMNaNIsJmkvElj5KoYC-M5atxVwBne2Ujag6NDvIHqmyv0JYCeHse3/export?format=csv";
+
+    Papa.parse(csvUrl, {
+      download: true,
+      header: true,
+      complete: function(results) {
+        const lista = document.getElementById("confirmados");
+        const total = document.getElementById("total");
+        lista.innerHTML = "";
+        let soma = 0;
+        results.data.forEach(row => {
+          if(row["Nome"] && row["Quantidade de pessoas"]) {
+            const li = document.createElement("li");
+            li.textContent = `${row["Nome"]} - ${row["Quantidade de pessoas"]} pessoa(s)`;
+            lista.appendChild(li);
+            soma += parseInt(row["Quantidade de pessoas"]);
+          }
+        });
+        total.textContent = `👥 Total de convidados confirmados: ${soma}`;
+      }
+    });
+  </script>
 </body>
 </html>
