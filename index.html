@@ -1,5 +1,5 @@
 
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -86,15 +86,24 @@
         const total = document.getElementById("total");
         lista.innerHTML = "";
         let soma = 0;
+        let count = 0;
+
         results.data.forEach(row => {
           if(row["Nome"] && row["Quantidade de pessoas"]) {
             const li = document.createElement("li");
             li.textContent = `${row["Nome"]} - ${row["Quantidade de pessoas"]} pessoa(s)`;
             lista.appendChild(li);
             soma += parseInt(row["Quantidade de pessoas"]);
+            count++;
           }
         });
-        total.textContent = `👥 Total de convidados confirmados: ${soma}`;
+
+        if (count === 0) {
+          lista.innerHTML = "<li>Nenhum convidado confirmado ainda 😢</li>";
+          total.textContent = "";
+        } else {
+          total.textContent = `👥 Total de convidados confirmados: ${soma}`;
+        }
       }
     });
   </script>
